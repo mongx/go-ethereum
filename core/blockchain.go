@@ -307,6 +307,8 @@ func NewBlockChain(db ethdb.Database, cacheConfig *CacheConfig, chainConfig *par
 			}
 		} else {
 			log.Warn("Head state missing, repairing", "number", head.Number(), "hash", head.Hash())
+			log.Warn("return bc for load old chain data")
+			return bc, nil
 			if err := bc.SetHead(head.NumberU64()); err != nil {
 				return nil, err
 			}
