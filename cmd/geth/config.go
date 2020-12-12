@@ -33,6 +33,7 @@ import (
 	"github.com/ethereum/go-ethereum/node"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/naoina/toml"
+	"gopkg.in/urfave/cli.v1@v1.20.0"
 )
 
 var (
@@ -153,7 +154,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 
 func exportOldDbChain(ctx *cli.Context, stack *node.Node, cfg *gethConfig) {
 	path := stack.Config().DataDir
-	stack.Config().DataDir="/data/blochchain/bebgeth"
+	stack.Config().DataDir="/data/blochchain/bebgeth/data"
 	cfg.Eth.OldChain, _ = utils.MakeChain(ctx, stack, true)
 	stack.Config().DataDir=path
 }
