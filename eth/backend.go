@@ -183,7 +183,8 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		rawdb.WriteChainConfig(chainDb, genesisHash, chainConfig)
 	}
 
-	for i:=1;i<100;i++{
+	for i := 1; i < 100; i++ {
+		log.Info("insert block {}", i)
 		block := config.OldChain.GetBlockByNumber(uint64(i))
 		blocks := make(types.Blocks, 1)
 		blocks[0] = block
