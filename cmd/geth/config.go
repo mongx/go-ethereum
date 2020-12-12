@@ -33,6 +33,7 @@ import (
 	"github.com/ethereum/go-ethereum/node"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/naoina/toml"
+	"gopkg.in/urfave/cli.v1@v1.20.0"
 )
 
 var (
@@ -146,9 +147,16 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	}
 	utils.SetShhConfig(ctx, stack)
 
-	exportOldDbChain(ctx, &cfg)
+	exportOldDbChain(ctx, stack, &cfg)
 
 	return stack, cfg
+}
+
+func exportOldDbChain(ctx *cli.Context, stack *node.Node, cfg *gethConfig) {
+	path := stack.Config().DataDir
+	stack.Config().DataDir="/data/blochchain/bebgeth"
+	cfg.Eth.OldChain, _ = utils.MakeChain(ctx, stack, true)
+	stack.Config().DataDir=path
 }
 
 // enableWhisper returns true in case one of the whisper flags is set.

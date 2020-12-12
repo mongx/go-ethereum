@@ -38,7 +38,7 @@ import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/metrics"
 	"github.com/ethereum/go-ethereum/trie"
-	"gopkg.in/urfave/cli.v1"
+	"gopkg.in/urfave/cli.v1@v1.20.0"
 )
 
 var (
@@ -366,14 +366,6 @@ func importChain(ctx *cli.Context) error {
 	}
 	fmt.Println(ioStats)
 	return importErr
-}
-
-func exportOldDbChain(ctx *cli.Context, cfg *gethConfig) {
-	stack, _ := makeConfigNode(ctx)
-	defer stack.Close()
-
-	stack.Config().DataDir="/data/blochchain/bebgeth"
-	cfg.Eth.OldChain, _ = utils.MakeChain(ctx, stack, true)
 }
 
 func exportChain(ctx *cli.Context) error {
