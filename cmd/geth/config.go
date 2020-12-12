@@ -160,7 +160,7 @@ func exportOldDbChain(ctx *cli.Context, cfg gethConfig) {
 
 	log.Error("make old chain ")
 	cfg.Eth.OldChain, _ = utils.MakeChain(ctx, stack, true)
-	log.Error("old chain stack datadir ", stack.Config().DataDir)
+	log.Error("old chain stack datadir: ", stack.Config().DataDir)
 }
 
 // enableWhisper returns true in case one of the whisper flags is set.
