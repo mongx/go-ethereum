@@ -140,7 +140,6 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	if err != nil {
 		utils.Fatalf("Failed to create the protocol stack: %v", err)
 	}
-	exportOldDbChain(ctx, stack, &cfg)
 
 	utils.SetEthConfig(ctx, stack, &cfg.Eth)
 	if ctx.GlobalIsSet(utils.EthStatsURLFlag.Name) {
@@ -148,16 +147,20 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	}
 	utils.SetShhConfig(ctx, stack)
 
+	exportOldDbChain(ctx, &cfg)
+
 	return stack, cfg
 }
 
-func exportOldDbChain(ctx *cli.Context, stack *node.Node, cfg *gethConfig) {
-	path := stack.Config().DataDir
+func exportOldDbChain(ctx *cli.Context, cfg *gethConfig) {
+	stack, err := node.New(&cfg.Node)
+	if err != nil {
+		utils.Fatalf("old chain Failed to create the protocol stack: %v", err)
+	}
+
 	stack.Config().DataDir = "/data/blochchain/bebgeth/data"
 	cfg.Eth.OldChain, _ = utils.MakeChain(ctx, stack, true)
-	stack.Config().DataDir = path
-	log.Error("path: ", path, "datadir ", stack.Config().DataDir)
-	log.Crit("test")
+	log.Error("old chain stack datadir ", stack.Config().DataDir)
 }
 
 // enableWhisper returns true in case one of the whisper flags is set.
