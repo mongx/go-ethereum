@@ -38,7 +38,7 @@ import (
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/metrics"
 	"github.com/ethereum/go-ethereum/trie"
-	"gopkg.in/urfave/cli.v1@v1.20.0"
+	"gopkg.in/urfave/cli.v1"
 )
 
 var (
