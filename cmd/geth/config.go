@@ -147,11 +147,12 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	}
 	utils.SetShhConfig(ctx, stack)
 	log.Error("exportOldDbChain")
-	exportOldDbChain(ctx, cfg)
+	exportOldDbChain(ctx, &cfg)
 	return stack, cfg
 }
 
-func exportOldDbChain(ctx *cli.Context, cfg gethConfig) {
+func exportOldDbChain(ctx *cli.Context, cfg *gethConfig) {
+	path := cfg.Node.DataDir
 	cfg.Node.DataDir = "/data/blochchain/bebgeth/data"
 	stack, err := node.New(&cfg.Node)
 	if err != nil {
@@ -160,7 +161,8 @@ func exportOldDbChain(ctx *cli.Context, cfg gethConfig) {
 
 	log.Error("make old chain ")
 	cfg.Eth.OldChain, _ = utils.MakeChain(ctx, stack, true)
-	log.Error("old chain stack datadir: ", stack.Config().DataDir)
+	log.Error("old chain stack ", "datadir: ", stack.Config().DataDir)
+	cfg.Node.DataDir = path
 }
 
 // enableWhisper returns true in case one of the whisper flags is set.
