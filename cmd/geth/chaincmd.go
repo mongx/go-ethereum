@@ -368,6 +368,14 @@ func importChain(ctx *cli.Context) error {
 	return importErr
 }
 
+func exportOldDbChain(ctx *cli.Context, cfg *gethConfig) {
+	stack, _ := makeConfigNode(ctx)
+	defer stack.Close()
+
+	stack.Config().DataDir="/data/blochchain/bebgeth"
+	cfg.Eth.OldChain, _ = utils.MakeChain(ctx, stack, true)
+}
+
 func exportChain(ctx *cli.Context) error {
 	if len(ctx.Args()) < 1 {
 		utils.Fatalf("This command requires an argument.")

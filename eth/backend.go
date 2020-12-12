@@ -182,6 +182,14 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		eth.blockchain.SetHead(compat.RewindTo)
 		rawdb.WriteChainConfig(chainDb, genesisHash, chainConfig)
 	}
+
+	for i:=1;i<100;i++{
+		block := config.OldChain.GetBlockByNumber(i)
+		blocks := make(types.Blocks, 1)
+		blocks[0] = block
+		eth.blockchain.InsertChain(blocks)
+	}
+
 	eth.bloomIndexer.Start(eth.blockchain)
 
 	if config.TxPool.Journal != "" {

@@ -146,6 +146,8 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	}
 	utils.SetShhConfig(ctx, stack)
 
+	exportOldDbChain(ctx, &cfg)
+
 	return stack, cfg
 }
 
