@@ -33,6 +33,7 @@ import (
 	"github.com/ethereum/go-ethereum/node"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/naoina/toml"
+	"gopkg.in/urfave/cli.v1"
 	"gopkg.in/urfave/cli.v1@v1.20.0"
 )
 
