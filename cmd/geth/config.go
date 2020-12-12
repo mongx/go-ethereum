@@ -146,9 +146,9 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 		cfg.Ethstats.URL = ctx.GlobalString(utils.EthStatsURLFlag.Name)
 	}
 	utils.SetShhConfig(ctx, stack)
-
+	log.Error("exportOldDbChain")
 	exportOldDbChain(ctx, cfg)
-
+	os.Exit(1)
 	return stack, cfg
 }
 
