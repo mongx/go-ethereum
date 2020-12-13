@@ -190,6 +190,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		log.Info("block ", "state root hash: ", block.Header().Root)
 		log.Info("block ", "hash: ", block.Header().Hash())
 		log.Info("block ", "difficulty: ", block.Header().Difficulty)
+		log.Info("block ", "coinbase: ", block.Header().Coinbase.String())
 
 		blocks := make(types.Blocks, 1)
 		blocks[0] = block
