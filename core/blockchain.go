@@ -882,6 +882,8 @@ func (bc *BlockChain) HasBlockAndState(hash common.Hash, number uint64) bool {
 	if block == nil {
 		return false
 	}
+	//not check state trie
+	return true
 	return bc.HasState(block.Root())
 }
 
@@ -1945,7 +1947,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 				"uncles", len(block.Uncles()), "txs", len(block.Transactions()), "gas", block.GasUsed(),
 				"elapsed", common.PrettyDuration(time.Since(start)),
 				"root", block.Root())
-			log.Debug("error ", "err ", err)
+			log.Debug("error 0", "err ", err)
 			lastCanon = block
 
 			// Only count canonical blocks for GC processing time
