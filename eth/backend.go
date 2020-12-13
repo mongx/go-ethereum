@@ -206,7 +206,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		}
 		if len(blocks) > 0 {
 			if _, err := eth.blockchain.InsertChain(blocks); err != nil {
-				log.Crit("batch %d: failed to insert: %v", j, err)
+				log.Crit("batch failed to insert ", "batch ", j, "error:", err)
 			}
 		} else {
 			break
