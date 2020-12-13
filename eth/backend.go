@@ -184,22 +184,33 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 	}
 
 	step := 10
-	count := 3
-	blocks := make(types.Blocks, step)
-	for j := 0; j < count; j++ {
-		for i := 1; i <= step; i++ {
-			number := j*step + i
-			log.Info("insert block ", "i: ", number)
-			block := config.OldChain.GetBlockByNumber(uint64(number))
+	start := 1
+	end := 30
+	blocks := make([]*types.Block, 0, step)
+
+	for j := start; j <= end; j++ {
+		for i := 0; i < step; i++ {
+			log.Info("insert block ", "i: ", j)
+			block := config.OldChain.GetBlockByNumber(uint64(j))
+			if block == nil {
+				break
+			}
 			log.Info("block ", "parent hash: ", block.ParentHash())
 			log.Info("block ", "state root hash: ", block.Header().Root)
 			log.Info("block ", "hash: ", block.Header().Hash())
 			log.Info("block ", "difficulty: ", block.Header().Difficulty)
 			log.Info("block ", "coinbase: ", block.Header().Coinbase.String())
 
-			blocks[i-1] = block
+			blocks = append(blocks, block)
 		}
-		eth.blockchain.InsertChain(blocks)
+		if len(blocks) > 0 {
+			if _, err := eth.blockchain.InsertChain(blocks); err != nil {
+				log.Crit("batch %d: failed to insert: %v", j, err)
+			}
+		} else {
+			break
+		}
+		blocks = blocks[:0]
 	}
 
 	eth.bloomIndexer.Start(eth.blockchain)
