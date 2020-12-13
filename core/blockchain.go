@@ -1945,7 +1945,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 				"uncles", len(block.Uncles()), "txs", len(block.Transactions()), "gas", block.GasUsed(),
 				"elapsed", common.PrettyDuration(time.Since(start)),
 				"root", block.Root())
-
+			log.Debug("error ", "err ", err)
 			lastCanon = block
 
 			// Only count canonical blocks for GC processing time
@@ -1973,19 +1973,26 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 	}
 	// Any blocks remaining here? The only ones we care about are the future ones
 	if block != nil && errors.Is(err, consensus.ErrFutureBlock) {
+		log.Debug("add future block ")
+
 		if err := bc.addFutureBlock(block); err != nil {
+			log.Debug("return last  1", "err ", err)
+
 			return it.index, err
 		}
 		block, err = it.next()
 
 		for ; block != nil && errors.Is(err, consensus.ErrUnknownAncestor); block, err = it.next() {
 			if err := bc.addFutureBlock(block); err != nil {
+				log.Debug("return last  2", "err ", err)
+
 				return it.index, err
 			}
 			stats.queued++
 		}
 	}
 	stats.ignored += it.remaining()
+	log.Debug("return last  ", "err ", err)
 
 	return it.index, err
 }
