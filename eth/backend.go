@@ -183,18 +183,25 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		rawdb.WriteChainConfig(chainDb, genesisHash, chainConfig)
 	}
 
-	for i := 1; i < 100; i++ {
-		log.Info("insert block ", "i: ", i)
-		block := config.OldChain.GetBlockByNumber(uint64(i))
-		log.Info("block ", "parent hash: ", block.ParentHash())
-		log.Info("block ", "state root hash: ", block.Header().Root)
-		log.Info("block ", "hash: ", block.Header().Hash())
-		log.Info("block ", "difficulty: ", block.Header().Difficulty)
-		log.Info("block ", "coinbase: ", block.Header().Coinbase.String())
+	step := 10
+	i := 1
+	count := 3
+	blocks := make(types.Blocks, step)
+	for j := 0; j < count; j++ {
+		for i = 1; i <= step; i++ {
+			number := j*step + i
+			log.Info("insert block ", "i: ", number)
+			block := config.OldChain.GetBlockByNumber(uint64(number))
+			log.Info("block ", "parent hash: ", block.ParentHash())
+			log.Info("block ", "state root hash: ", block.Header().Root)
+			log.Info("block ", "hash: ", block.Header().Hash())
+			log.Info("block ", "difficulty: ", block.Header().Difficulty)
+			log.Info("block ", "coinbase: ", block.Header().Coinbase.String())
 
-		blocks := make(types.Blocks, 1)
-		blocks[0] = block
+			blocks[i-1] = block
+		}
 		eth.blockchain.InsertChain(blocks)
+		blocks = blocks[0:0]
 	}
 
 	eth.bloomIndexer.Start(eth.blockchain)
