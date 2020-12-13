@@ -184,11 +184,10 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 	}
 
 	step := 10
-	i := 1
 	count := 3
 	blocks := make(types.Blocks, step)
 	for j := 0; j < count; j++ {
-		for i = 1; i <= step; i++ {
+		for i := 1; i <= step; i++ {
 			number := j*step + i
 			log.Info("insert block ", "i: ", number)
 			block := config.OldChain.GetBlockByNumber(uint64(number))
@@ -201,7 +200,6 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 			blocks[i-1] = block
 		}
 		eth.blockchain.InsertChain(blocks)
-		blocks = blocks[0:0]
 	}
 
 	eth.bloomIndexer.Start(eth.blockchain)
