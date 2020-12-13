@@ -188,10 +188,11 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 	end := 30
 	blocks := make([]*types.Block, 0, step)
 
-	for j := start; j <= end; j++ {
+	for j := start; j <= end; {
 		for i := 0; i < step; i++ {
 			log.Info("insert block ", "i: ", j)
 			block := config.OldChain.GetBlockByNumber(uint64(j))
+			j++
 			if block == nil {
 				break
 			}
