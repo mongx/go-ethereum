@@ -307,6 +307,7 @@ func NewBlockChain(db ethdb.Database, cacheConfig *CacheConfig, chainConfig *par
 			}
 		} else {
 			log.Warn("Head state missing, repairing", "number", head.Number(), "hash", head.Hash())
+			return bc, nil
 			if err := bc.SetHead(head.NumberU64()); err != nil {
 				return nil, err
 			}
@@ -880,7 +881,6 @@ func (bc *BlockChain) HasBlockAndState(hash common.Hash, number uint64) bool {
 	if block == nil {
 		return false
 	}
-	return true
 	return bc.HasState(block.Root())
 }
 
