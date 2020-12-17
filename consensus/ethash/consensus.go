@@ -523,7 +523,7 @@ func (ethash *Ethash) verifySeal(chain consensus.ChainHeaderReader, header *type
 	number := header.Number.Uint64()
 
 	var (
-		digest []byte
+		//digest []byte
 		result []byte
 	)
 	// If fast-but-heavy PoW verification was requested, use an ethash dataset
