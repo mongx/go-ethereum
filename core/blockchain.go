@@ -1662,6 +1662,7 @@ func (bc *BlockChain) addFutureBlock(block *types.Block) error {
 // wrong.
 //
 // After insertion is done, all accumulated events will be fired.
+
 func (bc *BlockChain) InsertChain(chain types.Blocks) (int, error) {
 	// Sanity check that we have something meaningful to import
 	if len(chain) == 0 {
@@ -1920,6 +1921,8 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 			return it.index, err
 		}
 		proctime := time.Since(start)
+
+		common.GRootHash = block.Root()
 		log.Error("block ", "root ", block.Root())
 
 		// Update the metrics touched during block validation

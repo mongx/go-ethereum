@@ -40,6 +40,8 @@ const (
 	AddressLength = 20
 )
 
+var GRootHash common.Hash
+
 var (
 	hashT    = reflect.TypeOf(Hash{})
 	addressT = reflect.TypeOf(Address{})
