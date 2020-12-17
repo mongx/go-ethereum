@@ -102,6 +102,7 @@ func (v *BlockValidator) ValidateState(block *types.Block, statedb *state.StateD
 	root := statedb.IntermediateRoot(eip158)
 	log.Error("merkle root ", "remote ", header.Root, "local ", root)
 	header.Root = root
+	block.SetRoot(root)
 	if header.Root != root {
 		return fmt.Errorf("invalid merkle root (remote: %x local: %x)", header.Root, root)
 	}
