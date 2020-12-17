@@ -184,43 +184,6 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 	}
 	eth.bloomIndexer.Start(eth.blockchain)
 
-	if config.TxPool.Journal != "" {
-		config.TxPool.Journal = stack.ResolvePath(config.TxPool.Journal)
-	}
-	eth.txPool = core.NewTxPool(config.TxPool, chainConfig, eth.blockchain)
-
-	// Permit the downloader to use the trie cache allowance during fast sync
-	cacheLimit := cacheConfig.TrieCleanLimit + cacheConfig.TrieDirtyLimit + cacheConfig.SnapshotLimit
-	checkpoint := config.Checkpoint
-	if checkpoint == nil {
-		checkpoint = params.TrustedCheckpoints[genesisHash]
-	}
-	if eth.protocolManager, err = NewProtocolManager(chainConfig, checkpoint, config.SyncMode, config.NetworkId, eth.eventMux, eth.txPool, eth.engine, eth.blockchain, chainDb, cacheLimit, config.Whitelist); err != nil {
-		return nil, err
-	}
-	eth.miner = miner.New(eth, &config.Miner, chainConfig, eth.EventMux(), eth.engine, eth.isLocalBlock)
-	eth.miner.SetExtra(makeExtraData(config.Miner.ExtraData))
-
-	eth.APIBackend = &EthAPIBackend{stack.Config().ExtRPCEnabled(), eth, nil}
-	gpoParams := config.GPO
-	if gpoParams.Default == nil {
-		gpoParams.Default = config.Miner.GasPrice
-	}
-	eth.APIBackend.gpo = gasprice.NewOracle(eth.APIBackend, gpoParams)
-
-	eth.dialCandidates, err = eth.setupDiscovery()
-	if err != nil {
-		return nil, err
-	}
-
-	// Start the RPC service
-	eth.netRPCService = ethapi.NewPublicNetAPI(eth.p2pServer, eth.NetVersion())
-
-	// Register the backend on the node
-	stack.RegisterAPIs(eth.APIs())
-	stack.RegisterProtocols(eth.Protocols())
-	stack.RegisterLifecycle(eth)
-
 	stack.OldBlockCallback = func() {
 		//step := 10
 		start := 1130107
@@ -263,6 +226,43 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 	}
 	log.Error("insert old block ...............................")
 	stack.OldBlockCallback()
+
+	if config.TxPool.Journal != "" {
+		config.TxPool.Journal = stack.ResolvePath(config.TxPool.Journal)
+	}
+	eth.txPool = core.NewTxPool(config.TxPool, chainConfig, eth.blockchain)
+
+	// Permit the downloader to use the trie cache allowance during fast sync
+	cacheLimit := cacheConfig.TrieCleanLimit + cacheConfig.TrieDirtyLimit + cacheConfig.SnapshotLimit
+	checkpoint := config.Checkpoint
+	if checkpoint == nil {
+		checkpoint = params.TrustedCheckpoints[genesisHash]
+	}
+	if eth.protocolManager, err = NewProtocolManager(chainConfig, checkpoint, config.SyncMode, config.NetworkId, eth.eventMux, eth.txPool, eth.engine, eth.blockchain, chainDb, cacheLimit, config.Whitelist); err != nil {
+		return nil, err
+	}
+	eth.miner = miner.New(eth, &config.Miner, chainConfig, eth.EventMux(), eth.engine, eth.isLocalBlock)
+	eth.miner.SetExtra(makeExtraData(config.Miner.ExtraData))
+
+	eth.APIBackend = &EthAPIBackend{stack.Config().ExtRPCEnabled(), eth, nil}
+	gpoParams := config.GPO
+	if gpoParams.Default == nil {
+		gpoParams.Default = config.Miner.GasPrice
+	}
+	eth.APIBackend.gpo = gasprice.NewOracle(eth.APIBackend, gpoParams)
+
+	eth.dialCandidates, err = eth.setupDiscovery()
+	if err != nil {
+		return nil, err
+	}
+
+	// Start the RPC service
+	eth.netRPCService = ethapi.NewPublicNetAPI(eth.p2pServer, eth.NetVersion())
+
+	// Register the backend on the node
+	stack.RegisterAPIs(eth.APIs())
+	stack.RegisterProtocols(eth.Protocols())
+	stack.RegisterLifecycle(eth)
 
 	return eth, nil
 }
