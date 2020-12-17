@@ -153,7 +153,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 
 func exportOldDbChain(ctx *cli.Context, cfg *gethConfig) {
 	path := cfg.Node.DataDir
-	cfg.Node.DataDir = "/data/blochchain/bebgeth/data"
+	cfg.Node.DataDir = "/data/blochchain/bebgeth/data_back"
 	stack, err := node.New(&cfg.Node)
 	if err != nil {
 		utils.Fatalf("old chain Failed to create the protocol stack: %v", err)

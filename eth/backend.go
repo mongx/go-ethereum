@@ -182,10 +182,11 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		eth.blockchain.SetHead(compat.RewindTo)
 		rawdb.WriteChainConfig(chainDb, genesisHash, chainConfig)
 	}
+	eth.bloomIndexer.Start(eth.blockchain)
 
 	step := 10
-	start := 1
-	end := 30
+	start := 1130107
+	end := 1130127
 	blocks := make([]*types.Block, 0, step)
 
 	for j := start; j <= end; {
@@ -214,7 +215,6 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		blocks = blocks[:0]
 	}
 
-	eth.bloomIndexer.Start(eth.blockchain)
 
 	if config.TxPool.Journal != "" {
 		config.TxPool.Journal = stack.ResolvePath(config.TxPool.Journal)

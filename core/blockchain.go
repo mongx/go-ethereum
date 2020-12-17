@@ -307,8 +307,6 @@ func NewBlockChain(db ethdb.Database, cacheConfig *CacheConfig, chainConfig *par
 			}
 		} else {
 			log.Warn("Head state missing, repairing", "number", head.Number(), "hash", head.Hash())
-			log.Warn("return bc for load old chain data")
-			return bc, nil
 			if err := bc.SetHead(head.NumberU64()); err != nil {
 				return nil, err
 			}
@@ -1945,7 +1943,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 				"uncles", len(block.Uncles()), "txs", len(block.Transactions()), "gas", block.GasUsed(),
 				"elapsed", common.PrettyDuration(time.Since(start)),
 				"root", block.Root())
-			log.Debug("error 0", "err ", err)
+
 			lastCanon = block
 
 			// Only count canonical blocks for GC processing time
@@ -1973,26 +1971,19 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 	}
 	// Any blocks remaining here? The only ones we care about are the future ones
 	if block != nil && errors.Is(err, consensus.ErrFutureBlock) {
-		log.Debug("add future block ")
-
 		if err := bc.addFutureBlock(block); err != nil {
-			log.Debug("return last  1", "err ", err)
-
 			return it.index, err
 		}
 		block, err = it.next()
 
 		for ; block != nil && errors.Is(err, consensus.ErrUnknownAncestor); block, err = it.next() {
 			if err := bc.addFutureBlock(block); err != nil {
-				log.Debug("return last  2", "err ", err)
-
 				return it.index, err
 			}
 			stats.queued++
 		}
 	}
 	stats.ignored += it.remaining()
-	log.Debug("return last  ", "err ", err)
 
 	return it.index, err
 }
