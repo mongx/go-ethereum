@@ -358,9 +358,6 @@ func geth(ctx *cli.Context) error {
 
 	log.Error("recovery old block sleep 10 s")
 
-	time.Sleep(10 * time.Second)
-	go stack.OldBlockCallback()
-
 	stack.Wait()
 	return nil
 }
