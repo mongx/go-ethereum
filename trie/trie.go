@@ -26,6 +26,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/rlp"
+	"runtime/debug"
 )
 
 var (
@@ -485,6 +486,8 @@ func (t *Trie) resolveHash(n hashNode, prefix []byte) (node, error) {
 	if node := t.db.node(hash); node != nil {
 		return node, nil
 	}
+	debug.PrintStack()
+	panic("...")
 	return nil, &MissingNodeError{NodeHash: hash, Path: prefix}
 }
 

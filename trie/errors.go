@@ -20,8 +20,6 @@ import (
 	"fmt"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/log"
-	"runtime/debug"
 )
 
 // MissingNodeError is returned by the trie functions (TryGet, TryUpdate, TryDelete)
@@ -33,7 +31,5 @@ type MissingNodeError struct {
 }
 
 func (err *MissingNodeError) Error() string {
-	debug.PrintStack()
-	log.Crit("wrong")
 	return fmt.Sprintf("missing trie node %x (path %x)", err.NodeHash, err.Path)
 }
