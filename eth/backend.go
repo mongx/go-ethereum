@@ -215,6 +215,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 
 			headers := make([]*types.Header, 1)
 			block.SetRoot(common.GRootHash)
+			log.Error("root hash", "hash", block.Root())
 			headers[0] = block.Header()
 			if _, err := eth.blockchain.InsertHeaderChain(headers, 1); err != nil {
 				log.Crit("batch failed to insert header ", "batch ", j, "error:", err)
