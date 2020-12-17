@@ -33,7 +33,7 @@ type MissingNodeError struct {
 }
 
 func (err *MissingNodeError) Error() string {
-	debug.Stack()
+	debug.PrintStack()
 	log.Crit("wrong")
 	return fmt.Sprintf("missing trie node %x (path %x)", err.NodeHash, err.Path)
 }
