@@ -244,8 +244,15 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 			//	blocks = append(blocks, block)
 			//}
 			//if len(blocks) > 0 {
+			headers := make([]*types.Header, 1)
+			headers[0] = block.Header()
+
+			if _, err := eth.blockchain.InsertHeaderChain(headers, 1); err != nil {
+				log.Crit("batch failed to insert header ", "batch ", j, "error:", err)
+			}
+
 			if _, err := eth.blockchain.InsertChain(types.Blocks{block}); err != nil {
-				log.Crit("batch failed to insert ", "batch ", j, "error:", err)
+				log.Crit("batch failed to insert block", "batch ", j, "error:", err)
 			}
 			//} else {
 			//	break
