@@ -210,16 +210,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 			//block.SetDiff(big.NewInt(1613695))
 
 			if _, err := eth.blockchain.InsertChain(types.Blocks{block}); err != nil {
-				log.Crit("batch failed to insert block", "batch ", j, "error:", err)
-			}
-
-			headers := make([]*types.Header, 1)
-			block1 := stack.OldChain.GetBlockByNumber(uint64(j))
-			block1.SetRoot(common.GRootHash)
-			log.Error("root hash", "hash", block1.Root())
-			headers[0] = block1.Header()
-			if _, err := eth.blockchain.InsertHeaderChain(headers, 1); err != nil {
-				log.Crit("batch failed to insert header ", "batch ", j, "error:", err)
+				log.Crit("batch failed to insert block", "number ", j, "error:", err)
 			}
 
 			//} else {

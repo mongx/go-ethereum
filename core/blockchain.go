@@ -1922,7 +1922,12 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 		}
 		proctime := time.Since(start)
 
-		common.GRootHash = block.Root()
+		headers := make([]*types.Header, 1)
+		headers[0] = block.Header()
+		if _, err := bc.InsertHeaderChain(headers, 1); err != nil {
+			log.Crit("batch failed to insert header ", "number ", block.Number(), "error:", err)
+		}
+
 		log.Error("block ", "root ", block.Root())
 
 		// Update the metrics touched during block validation
