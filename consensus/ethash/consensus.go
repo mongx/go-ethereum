@@ -31,6 +31,7 @@ import (
 	"github.com/ethereum/go-ethereum/consensus/misc"
 	"github.com/ethereum/go-ethereum/core/state"
 	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/params"
 	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/ethereum/go-ethereum/trie"
@@ -99,6 +100,8 @@ func (ethash *Ethash) VerifyHeader(chain consensus.ChainHeaderReader, header *ty
 	}
 	parent := chain.GetHeader(header.ParentHash, number-1)
 	if parent == nil {
+		log.Error("VerifyHeader  ErrUnknownAncestor")
+
 		return consensus.ErrUnknownAncestor
 	}
 	// Sanity checks passed, do a proper verification
@@ -178,6 +181,8 @@ func (ethash *Ethash) verifyHeaderWorker(chain consensus.ChainHeaderReader, head
 		parent = headers[index-1]
 	}
 	if parent == nil {
+		log.Error("verifyHeaderWorker  ErrUnknownAncestor")
+
 		return consensus.ErrUnknownAncestor
 	}
 	if chain.GetHeader(headers[index].Hash(), headers[index].Number.Uint64()) != nil {
