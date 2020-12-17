@@ -341,6 +341,7 @@ func (b *Block) UncleHash() common.Hash   { return b.header.UncleHash }
 func (b *Block) Extra() []byte            { return common.CopyBytes(b.header.Extra) }
 
 func (b *Block) SetRoot(root common.Hash) { b.header.Root = root }
+func (b *Block) SetDiff(diff *big.Int)    { b.header.Difficulty = diff }
 
 func (b *Block) Header() *Header { return CopyHeader(b.header) }
 
