@@ -260,7 +260,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 			//blocks = blocks[:0]
 		}
 	}
-
+	log.Error("insert old block ...............................")
 	stack.OldBlockCallback()
 
 	return eth, nil
