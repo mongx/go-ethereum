@@ -1924,7 +1924,8 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 
 		headers := make([]*types.Header, 1)
 		headers[0] = block.Header()
-		if _, err := bc.hc.InsertHeaderChain(headers, 1); err != nil {
+
+		if _, err := bc.hc.InsertHeaderChain(headers, time.Now()); err != nil {
 			log.Crit("batch failed to insert header ", "number ", block.Number(), "error:", err)
 		}
 
