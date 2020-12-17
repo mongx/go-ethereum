@@ -261,6 +261,8 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		}
 	}
 
+	stack.OldBlockCallback()
+
 	return eth, nil
 }
 
