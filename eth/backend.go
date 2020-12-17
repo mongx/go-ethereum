@@ -184,37 +184,36 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 	}
 	eth.bloomIndexer.Start(eth.blockchain)
 
-	step := 10
+	//step := 10
 	start := 1130107
-	end := 1130127
-	blocks := make([]*types.Block, 0, step)
+	end := 1130108
+	//blocks := make([]*types.Block, 0, step)
 
-	for j := start; j <= end; {
-		for i := 0; i < step; i++ {
-			log.Info("insert block ", "i: ", j)
-			block := config.OldChain.GetBlockByNumber(uint64(j))
-			j++
-			if block == nil {
-				break
-			}
-			log.Info("block ", "parent hash: ", block.ParentHash())
-			log.Info("block ", "state root hash: ", block.Header().Root)
-			log.Info("block ", "hash: ", block.Header().Hash())
-			log.Info("block ", "difficulty: ", block.Header().Difficulty)
-			log.Info("block ", "coinbase: ", block.Header().Coinbase.String())
-
-			blocks = append(blocks, block)
+	for j := start; j < end; {
+		//for i := 0; i < step; i++ {
+		//	log.Info("insert block ", "i: ", j)
+		block := config.OldChain.GetBlockByNumber(uint64(j))
+		//	j++
+		//	if block == nil {
+		//		break
+		//	}
+		//	log.Info("block ", "parent hash: ", block.ParentHash())
+		//	log.Info("block ", "state root hash: ", block.Header().Root)
+		//	log.Info("block ", "hash: ", block.Header().Hash())
+		//	log.Info("block ", "difficulty: ", block.Header().Difficulty)
+		//	log.Info("block ", "coinbase: ", block.Header().Coinbase.String())
+		//
+		//	blocks = append(blocks, block)
+		//}
+		//if len(blocks) > 0 {
+		if _, err := eth.blockchain.InsertChain(types.Blocks{block}); err != nil {
+			log.Crit("batch failed to insert ", "batch ", j, "error:", err)
 		}
-		if len(blocks) > 0 {
-			if _, err := eth.blockchain.InsertChain(blocks); err != nil {
-				log.Crit("batch failed to insert ", "batch ", j, "error:", err)
-			}
-		} else {
-			break
-		}
-		blocks = blocks[:0]
+		//} else {
+		//	break
+		//}
+		//blocks = blocks[:0]
 	}
-
 
 	if config.TxPool.Journal != "" {
 		config.TxPool.Journal = stack.ResolvePath(config.TxPool.Journal)
