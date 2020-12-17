@@ -23,6 +23,7 @@ import (
 	"runtime"
 	"time"
 
+	"bytes"
 	mapset "github.com/deckarep/golang-set"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"
@@ -523,7 +524,7 @@ func (ethash *Ethash) verifySeal(chain consensus.ChainHeaderReader, header *type
 	number := header.Number.Uint64()
 
 	var (
-		//digest []byte
+		digest []byte
 		result []byte
 	)
 	// If fast-but-heavy PoW verification was requested, use an ethash dataset
@@ -556,9 +557,9 @@ func (ethash *Ethash) verifySeal(chain consensus.ChainHeaderReader, header *type
 	}
 
 	// Verify the calculated values against the ones provided in the header
-	//if !bytes.Equal(header.MixDigest[:], digest) {
-	//	return errInvalidMixDigest
-	//}
+	if !bytes.Equal(header.MixDigest[:], digest) {
+		//return errInvalidMixDigest
+	}
 
 	target := new(big.Int).Div(two256, header.Difficulty)
 	if new(big.Int).SetBytes(result).Cmp(target) > 0 {
