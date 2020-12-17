@@ -880,6 +880,7 @@ func (bc *BlockChain) HasBlockAndState(hash common.Hash, number uint64) bool {
 	if block == nil {
 		return false
 	}
+	return true
 	return bc.HasState(block.Root())
 }
 
