@@ -186,10 +186,10 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 
 	//step := 10
 	start := 1130107
-	end := 1130108
+	end := 1130118
 	//blocks := make([]*types.Block, 0, step)
 	log.Error("recovery old lock", "from ", start, "to ", end)
-	for j := start; j < end; {
+	for j := start; j < end; j++ {
 		//for i := 0; i < step; i++ {
 		log.Info("insert block ", "number: ", j)
 		block := config.OldChain.GetBlockByNumber(uint64(j))
