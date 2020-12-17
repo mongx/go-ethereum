@@ -191,7 +191,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 	log.Error("recovery old lock", "from ", start, "to ", end)
 	for j := start; j < end; {
 		//for i := 0; i < step; i++ {
-		//	log.Info("insert block ", "i: ", j)
+		log.Info("insert block ", "number: ", j)
 		block := config.OldChain.GetBlockByNumber(uint64(j))
 		//	j++
 		//	if block == nil {
