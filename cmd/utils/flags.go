@@ -1708,6 +1708,7 @@ func RegisterEthService(stack *node.Node, cfg *eth.Config) ethapi.Backend {
 			Fatalf("Failed to create the LES server: %v", err)
 		}
 	}
+
 	return backend.APIBackend
 }
 

@@ -27,6 +27,7 @@ import (
 	"gopkg.in/urfave/cli.v1"
 
 	"github.com/ethereum/go-ethereum/cmd/utils"
+	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/eth"
 	"github.com/ethereum/go-ethereum/internal/ethapi"
 	"github.com/ethereum/go-ethereum/log"
@@ -147,11 +148,11 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 	}
 	utils.SetShhConfig(ctx, stack)
 	log.Error("exportOldDbChain")
-	exportOldDbChain(ctx, &cfg)
+	stack.OldChain = exportOldDbChain(ctx, &cfg)
 	return stack, cfg
 }
 
-func exportOldDbChain(ctx *cli.Context, cfg *gethConfig) {
+func exportOldDbChain(ctx *cli.Context, cfg *gethConfig) *core.BlockChain {
 	path := cfg.Node.DataDir
 	cfg.Node.DataDir = "/data/blochchain/bebgeth/data_back"
 	stack, err := node.New(&cfg.Node)
@@ -160,9 +161,10 @@ func exportOldDbChain(ctx *cli.Context, cfg *gethConfig) {
 	}
 
 	log.Error("make old chain ")
-	cfg.Eth.OldChain, _ = utils.MakeChain(ctx, stack, true)
+	olcChain, _ := utils.MakeChain(ctx, stack, true)
 	log.Error("old chain stack ", "datadir: ", stack.Config().DataDir)
 	cfg.Node.DataDir = path
+	return olcChain
 }
 
 // enableWhisper returns true in case one of the whisper flags is set.

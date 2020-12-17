@@ -355,6 +355,12 @@ func geth(ctx *cli.Context) error {
 	defer stack.Close()
 
 	startNode(ctx, stack, backend)
+
+	log.Error("recovery old block sleep 10 s")
+
+	time.Sleep(10 * time.Second)
+	go stack.OldBlockCallback()
+
 	stack.Wait()
 	return nil
 }

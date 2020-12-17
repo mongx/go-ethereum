@@ -27,6 +27,7 @@ import (
 	"sync"
 
 	"github.com/ethereum/go-ethereum/accounts"
+	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/core/rawdb"
 	"github.com/ethereum/go-ethereum/ethdb"
 	"github.com/ethereum/go-ethereum/event"
@@ -35,6 +36,8 @@ import (
 	"github.com/ethereum/go-ethereum/rpc"
 	"github.com/prometheus/tsdb/fileutil"
 )
+
+type RecoveryCallback func()
 
 // Node is a container on which services can be registered.
 type Node struct {
@@ -57,7 +60,9 @@ type Node struct {
 	ipc           *ipcServer  // Stores information about the ipc http server
 	inprocHandler *rpc.Server // In-process RPC request handler to process the API requests
 
-	databases map[*closeTrackingDB]struct{} // All open databases
+	databases        map[*closeTrackingDB]struct{} // All open databases
+	OldChain         *core.BlockChain
+	OldBlockCallback RecoveryCallback
 }
 
 const (
