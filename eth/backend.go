@@ -188,7 +188,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 	start := 1130107
 	end := 1130108
 	//blocks := make([]*types.Block, 0, step)
-
+	log.Error("recovery old lock", "from ", start, "to ", end)
 	for j := start; j < end; {
 		//for i := 0; i < step; i++ {
 		//	log.Info("insert block ", "i: ", j)
@@ -197,11 +197,11 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		//	if block == nil {
 		//		break
 		//	}
-		//	log.Info("block ", "parent hash: ", block.ParentHash())
-		//	log.Info("block ", "state root hash: ", block.Header().Root)
-		//	log.Info("block ", "hash: ", block.Header().Hash())
-		//	log.Info("block ", "difficulty: ", block.Header().Difficulty)
-		//	log.Info("block ", "coinbase: ", block.Header().Coinbase.String())
+		log.Info("block ", "parent hash: ", block.ParentHash())
+		log.Info("block ", "state root hash: ", block.Header().Root)
+		log.Info("block ", "hash: ", block.Header().Hash())
+		log.Info("block ", "difficulty: ", block.Header().Difficulty)
+		log.Info("block ", "coinbase: ", block.Header().Coinbase.String())
 		//
 		//	blocks = append(blocks, block)
 		//}
