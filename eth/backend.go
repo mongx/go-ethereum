@@ -244,7 +244,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 			//	blocks = append(blocks, block)
 			//}
 			//if len(blocks) > 0 {
-			block.SetDiff(big.NewInt(1613695))
+			//block.SetDiff(big.NewInt(1613695))
 			headers := make([]*types.Header, 1)
 			headers[0] = block.Header()
 
