@@ -1511,7 +1511,7 @@ func (bc *BlockChain) writeBlockWithState(block *types.Block, receipts []*types.
 	// Calculate the total difficulty of the block
 	ptd := bc.GetTd(block.ParentHash(), block.NumberU64()-1)
 	if ptd == nil {
-		log.Error("writeBlockWithState ErrUnknownAncestor")
+		log.Info("writeBlockWithState ErrUnknownAncestor")
 		return NonStatTy, consensus.ErrUnknownAncestor
 	}
 	// Make sure no inconsistent state is leaked during insertion
@@ -1791,7 +1791,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 		// First block is future, shove it (and all children) to the future queue (unknown ancestor)
 	case errors.Is(err, consensus.ErrFutureBlock) || (errors.Is(err, consensus.ErrUnknownAncestor) && bc.futureBlocks.Contains(it.first().ParentHash())):
 		if errors.Is(err, consensus.ErrUnknownAncestor) {
-			log.Error("insert chain ErrUnknownAncestor")
+			log.Info("insert chain ErrUnknownAncestor")
 		}
 
 		for block != nil && (it.index == 0 || errors.Is(err, consensus.ErrUnknownAncestor)) {
@@ -1913,7 +1913,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 
 		blockExecutionTimer.Update(time.Since(substart) - trieproc - triehash)
 
-		log.Error("block root ", "before ValidateState ", block.Root())
+		log.Info("block root ", "before ValidateState ", block.Root())
 		oldHeadHash := block.Header().Hash()
 		log.Error("block head hash ", "before ValidateState ", oldHeadHash)
 
@@ -1926,9 +1926,9 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 		}
 		proctime := time.Since(start)
 
-		log.Error("block root ", "after ValidateState ", block.Root())
+		log.Info("block root ", "after ValidateState ", block.Root())
 		common.GnewBlockHash = block.Header().Hash()
-		log.Error("block head hash ", "after ValidateState ", block.Header().Hash())
+		log.Info("block head hash ", "after ValidateState ", block.Header().Hash())
 
 		headers := make([]*types.Header, 1)
 		headers[0] = block.Header()

@@ -189,7 +189,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		start := 1130107
 		end := 6596044
 		//blocks := make([]*types.Block, 0, step)
-		log.Error("recovery old lock", "from ", start, "to ", end)
+		log.Info("recovery old lock", "from ", start, "to ", end)
 
 		for j := start; j < end; j++ {
 			//for i := 0; i < step; i++ {
@@ -224,7 +224,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 			//blocks = blocks[:0]
 		}
 	}
-	log.Error("insert old block ...............................")
+	log.Info("insert old block ...............................")
 	stack.OldBlockCallback()
 
 	if config.TxPool.Journal != "" {

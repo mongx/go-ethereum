@@ -147,7 +147,7 @@ func makeConfigNode(ctx *cli.Context) (*node.Node, gethConfig) {
 		cfg.Ethstats.URL = ctx.GlobalString(utils.EthStatsURLFlag.Name)
 	}
 	utils.SetShhConfig(ctx, stack)
-	log.Error("exportOldDbChain")
+	log.Info("exportOldDbChain")
 	stack.OldChain = exportOldDbChain(ctx, &cfg)
 	return stack, cfg
 }
@@ -160,9 +160,9 @@ func exportOldDbChain(ctx *cli.Context, cfg *gethConfig) *core.BlockChain {
 		utils.Fatalf("old chain Failed to create the protocol stack: %v", err)
 	}
 
-	log.Error("make old chain ")
+	log.Info("make old chain ")
 	olcChain, _ := utils.MakeChain(ctx, stack, true)
-	log.Error("old chain stack ", "datadir: ", stack.Config().DataDir)
+	log.Info("old chain stack ", "datadir: ", stack.Config().DataDir)
 	cfg.Node.DataDir = path
 	return olcChain
 }

@@ -99,9 +99,9 @@ func (v *BlockValidator) ValidateState(block *types.Block, statedb *state.StateD
 	// Validate the state root against the received state root and throw
 	// an error if they don't match.
 	eip158 := v.config.IsEIP158(header.Number)
-	log.Error("eip 158 ", "is ", eip158)
+	log.Info("eip 158 ", "is ", eip158)
 	root := statedb.IntermediateRoot(eip158)
-	log.Error("merkle root ", "remote ", header.Root, "local ", root)
+	log.Info("merkle root ", "remote ", header.Root, "local ", root)
 	header.Root = root
 	block.SetRoot(root)
 	if header.Root != root {
