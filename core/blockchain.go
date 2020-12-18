@@ -1914,11 +1914,11 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 		blockExecutionTimer.Update(time.Since(substart) - trieproc - triehash)
 
 
-		headers := make([]*types.Header, 1)
-		headers[0] = block.Header()
-		if _, err := bc.hc.InsertHeaderChain(headers, time.Now()); err != nil {
-			log.Crit("batch failed to insert header ", "number ", block.Number(), "error:", err)
-		}
+		//headers := make([]*types.Header, 1)
+		//headers[0] = block.Header()
+		//if _, err := bc.hc.InsertHeaderChain(headers, time.Now()); err != nil {
+		//	log.Crit("batch failed to insert header ", "number ", block.Number(), "error:", err)
+		//}
 
 		log.Error("block root ", "before ValidateState ", block.Root())
 
@@ -1931,6 +1931,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 		}
 		proctime := time.Since(start)
 
+		log.Error("block root ", "after ValidateState ", block.Root())
 
 		// Update the metrics touched during block validation
 		accountHashTimer.Update(statedb.AccountHashes) // Account hashes are complete, we can mark them
