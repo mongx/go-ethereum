@@ -1913,6 +1913,15 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 
 		blockExecutionTimer.Update(time.Since(substart) - trieproc - triehash)
 
+
+		headers := make([]*types.Header, 1)
+		headers[0] = block.Header()
+		if _, err := bc.hc.InsertHeaderChain(headers, time.Now()); err != nil {
+			log.Crit("batch failed to insert header ", "number ", block.Number(), "error:", err)
+		}
+
+		log.Error("block root ", "before ValidateState ", block.Root())
+
 		// Validate the state using the default validator
 		substart = time.Now()
 		if err := bc.validator.ValidateState(block, statedb, receipts, usedGas); err != nil {
@@ -1922,14 +1931,6 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 		}
 		proctime := time.Since(start)
 
-		headers := make([]*types.Header, 1)
-		headers[0] = block.Header()
-
-		if _, err := bc.hc.InsertHeaderChain(headers, time.Now()); err != nil {
-			log.Crit("batch failed to insert header ", "number ", block.Number(), "error:", err)
-		}
-
-		log.Error("block ", "root ", block.Root())
 
 		// Update the metrics touched during block validation
 		accountHashTimer.Update(statedb.AccountHashes) // Account hashes are complete, we can mark them
