@@ -1917,7 +1917,6 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 		oldHeadHash := block.Header().Hash()
 		log.Error("block head hash ", "before ValidateState ", oldHeadHash)
 
-
 		// Validate the state using the default validator
 		substart = time.Now()
 		if err := bc.validator.ValidateState(block, statedb, receipts, usedGas); err != nil {
@@ -1929,7 +1928,6 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 
 		log.Error("block root ", "after ValidateState ", block.Root())
 		common.GnewBlockHash = block.Header().Hash()
-
 		log.Error("block head hash ", "after ValidateState ", block.Header().Hash())
 
 		headers := make([]*types.Header, 1)

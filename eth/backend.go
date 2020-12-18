@@ -201,8 +201,8 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 			//	}
 			log.Info("block ", "parent hash: ", block.ParentHash())
 			if j>1130107{
-				log.Info("block ", "set new parent hash: ", block.ParentHash())
 				block.SetParentHash(common.GnewBlockHash)
+				log.Info("block ", "set new parent hash: ", block.ParentHash())
 			}
 			log.Info("block ", "state root hash: ", block.Header().Root)
 			log.Info("block ", "hash: ", block.Header().Hash())
