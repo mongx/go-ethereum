@@ -40,7 +40,7 @@ const (
 	AddressLength = 20
 )
 
-var GRootHash Hash
+var GnewBlockHash Hash
 
 var (
 	hashT    = reflect.TypeOf(Hash{})

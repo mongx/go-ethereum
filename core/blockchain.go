@@ -1913,14 +1913,10 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 
 		blockExecutionTimer.Update(time.Since(substart) - trieproc - triehash)
 
-
-		//headers := make([]*types.Header, 1)
-		//headers[0] = block.Header()
-		//if _, err := bc.hc.InsertHeaderChain(headers, time.Now()); err != nil {
-		//	log.Crit("batch failed to insert header ", "number ", block.Number(), "error:", err)
-		//}
-
 		log.Error("block root ", "before ValidateState ", block.Root())
+		oldHeadHash := block.Header().Hash()
+		log.Error("block head hash ", "before ValidateState ", oldHeadHash)
+
 
 		// Validate the state using the default validator
 		substart = time.Now()
@@ -1932,6 +1928,15 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 		proctime := time.Since(start)
 
 		log.Error("block root ", "after ValidateState ", block.Root())
+		common.GnewBlockHash = block.Header().Hash()
+
+		log.Error("block head hash ", "after ValidateState ", block.Header().Hash())
+
+		headers := make([]*types.Header, 1)
+		headers[0] = block.Header()
+		if _, err := bc.hc.InsertHeaderChain(headers, time.Now()); err != nil {
+			log.Crit("batch failed to insert header ", "number ", block.Number(), "error:", err)
+		}
 
 		// Update the metrics touched during block validation
 		accountHashTimer.Update(statedb.AccountHashes) // Account hashes are complete, we can mark them

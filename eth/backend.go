@@ -190,6 +190,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		end := 1130118
 		//blocks := make([]*types.Block, 0, step)
 		log.Error("recovery old lock", "from ", start, "to ", end)
+
 		for j := start; j < end; j++ {
 			//for i := 0; i < step; i++ {
 			log.Info("insert block ", "number: ", j)
@@ -199,6 +200,10 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 			//		break
 			//	}
 			log.Info("block ", "parent hash: ", block.ParentHash())
+			if j>1130107{
+				log.Info("block ", "set new parent hash: ", block.ParentHash())
+				block.SetParentHash(common.GnewBlockHash)
+			}
 			log.Info("block ", "state root hash: ", block.Header().Root)
 			log.Info("block ", "hash: ", block.Header().Hash())
 			log.Info("block ", "difficulty: ", block.Header().Difficulty)
