@@ -1539,6 +1539,13 @@ func (bc *BlockChain) writeBlockWithState(block *types.Block, receipts []*types.
 	triedb := bc.stateCache.TrieDB()
 
 	// If we're running an archive node, always flush
+	if block.Number() == big.NewInt(1140106) {
+		log.Info("write cache block to disk")
+		if err := triedb.Commit(root, false, nil); err != nil {
+			log.Error("write error!!!")
+			return NonStatTy, err
+		}
+	}
 	if bc.cacheConfig.TrieDirtyDisabled {
 		if err := triedb.Commit(root, false, nil); err != nil {
 			return NonStatTy, err

@@ -186,8 +186,10 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 
 	stack.OldBlockCallback = func() {
 		//step := 10
+		//start := 1130107
+		//end := 6596044
 		start := 1130107
-		end := 6596044
+		end := 1140107
 		//blocks := make([]*types.Block, 0, step)
 		log.Info("recovery old lock", "from ", start, "to ", end)
 
