@@ -144,4 +144,6 @@ var (
 	GenesisDifficulty      = big.NewInt(131072) // Difficulty of the Genesis block.
 	MinimumDifficulty      = big.NewInt(131072) // The minimum that the difficulty may ever be.
 	DurationLimit          = big.NewInt(13)     // The decision boundary on the blocktime duration used to determine whether difficulty should go up or not.
+	MinimumDifficultyBeb   = big.NewInt(128)    // The minimum that the difficulty may ever be.
+	DurationLimitBeb       = big.NewInt(4)      // The decision boundary on the blocktime duration used to determine whether difficulty should go up or not.
 )
