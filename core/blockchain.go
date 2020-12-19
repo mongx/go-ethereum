@@ -1924,7 +1924,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 
 		log.Info("block root ", "before ValidateState ", block.Root())
 		oldHeadHash := block.Header().Hash()
-		log.Error("block head hash ", "before ValidateState ", oldHeadHash)
+		log.Info("block head hash ", "before ValidateState ", oldHeadHash)
 
 		// Validate the state using the default validator
 		substart = time.Now()
