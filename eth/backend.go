@@ -186,7 +186,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 
 	stack.OldBlockCallback = func() {
 		//step := 10
-		start := 1130107
+		start := 6596043
 		end := 6596044
 		//blocks := make([]*types.Block, 0, step)
 		log.Info("recovery old lock", "from ", start, "to ", end)
@@ -200,7 +200,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 			//		break
 			//	}
 			log.Info("block ", "parent hash: ", block.ParentHash())
-			if j>1130107{
+			if j > 1130107 {
 				block.SetParentHash(common.GnewBlockHash)
 				log.Info("block ", "set new parent hash: ", block.ParentHash())
 			}
