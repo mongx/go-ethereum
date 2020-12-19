@@ -1938,7 +1938,7 @@ func (bc *BlockChain) insertChain(chain types.Blocks, verifySeals bool) (int, er
 		log.Info("block root ", "after ValidateState ", block.Root())
 		common.GnewBlockHash = block.Header().Hash()
 		log.Info("block head hash ", "after ValidateState ", block.Header().Hash())
-
+		log.Error("insert block ", "number ", block.Number())
 		headers := make([]*types.Header, 1)
 		headers[0] = block.Header()
 		if _, err := bc.hc.InsertHeaderChain(headers, time.Now()); err != nil {
