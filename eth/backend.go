@@ -189,7 +189,7 @@ func New(stack *node.Node, config *Config) (*Ethereum, error) {
 		//start := 1130107
 		//end := 6596044
 		start := 1130107
-		end := 1140107
+		end := 1132107
 		//blocks := make([]*types.Block, 0, step)
 		log.Info("recovery old lock", "from ", start, "to ", end)
 

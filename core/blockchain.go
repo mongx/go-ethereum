@@ -1540,7 +1540,7 @@ func (bc *BlockChain) writeBlockWithState(block *types.Block, receipts []*types.
 
 	log.Info("check if need write cache block to disk", "number ", block.Number())
 	// If we're running an archive node, always flush
-	if block.Number() == big.NewInt(1140106) {
+	if block.Number() == big.NewInt(1132106) {
 		log.Info("write cache block to disk")
 		if err := triedb.Commit(root, false, nil); err != nil {
 			log.Error("write error!!!")
