@@ -588,8 +588,10 @@ func (ethash *Ethash) verifySeal(chain consensus.ChainHeaderReader, header *type
 		runtime.KeepAlive(cache)
 	}
 	// Verify the calculated values against the ones provided in the header
-	if !bytes.Equal(header.MixDigest[:], digest) {
-		return errInvalidMixDigest
+	if header.Number.Cmp(big.NewInt(6700000)) > 0 {
+		if !bytes.Equal(header.MixDigest[:], digest) {
+			return errInvalidMixDigest
+		}
 	}
 	target := new(big.Int).Div(two256, header.Difficulty)
 	if new(big.Int).SetBytes(result).Cmp(target) > 0 {
